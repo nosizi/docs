@@ -80,36 +80,36 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 module.exports = {
   entry: './src/main.js',
   output: {
-		path: path.resolve(__dirname, './build/'),
-		filename: 'scripts/bundle.js',
-		publicPath: '/'
+    path: path.resolve(__dirname, './build/'),
+    filename: 'scripts/bundle.js',
+    publicPath: '/'
   },
   resolve: {
-		extensions: ['.vue', '.js']
+    extensions: ['.vue', '.js']
   },
   module: {
-		rules: [
-			{
-				test: /\.js$/,
-				exclude: /node_modules/,
-         use: 'babel-loader'
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: 'babel-loader'
       },
-			{
-				test: /\.vue$/,
-				use: 'vue-loader'
+      {
+        test: /\.vue$/,
+        use: 'vue-loader'
       }
     ]
   },
   devServer: {
-		host: 'localhost',
-		port: 5000,
-		histortyApiFallback: true
+    host: 'localhost',
+    port: 5000,
+    histortyApiFallback: true
   },
   plugins: [
-		new VueLoaderPlugin(),
-		new HtmlWebpackPlugin({
-			filename: 'index.html',
-			template: path.resolve(__dirname, './src/main.js')
+    new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: path.resolve(__dirname, './src/main.js')
     })
   ]
 }
@@ -123,12 +123,12 @@ module.exports = {
 //babel.config.js
 module.exports = {
   presets: [
-		[
-			'@babel/preset-env',
-			{
-				useBuiltIns: 'usage'
-    	}
-  	]
+    [
+      '@babel/preset-env',
+      {
+        useBuiltIns: 'usage'
+      }
+    ]
   ],
   plugins: ['@babel/plugin-transform-runtime']
 }
@@ -157,16 +157,16 @@ new Vue({
 //App.vue
 <template>
   <div>
-		<h1>{{msg}}</h1>
+    <h1>{{msg}}</h1>
   </div>
 </template>
 
 <script>
-	export default {
-		name: 'App',
-		data() {
-			return {
-				msg: '不使用Vue-CLI来搭建Vue项目'
+  export default {
+    name: 'App',
+    data() {
+      return {
+        msg: '不使用Vue-CLI来搭建Vue项目'
       }
     }
   }
@@ -198,9 +198,11 @@ new Vue({
 打开`package.json`文件，我们编写执行打包的命令。
 
 ```json
-"script": {
-  "start": "webpack-dev-server --config ./webpack.config.js",
-  "build": "webpack --config ./webpack.config.js"
+{
+  "script": {
+    "start": "webpack-dev-server --config ./webpack.config.js",
+    "build": "webpack --config ./webpack.config.js"
+  }
 }
 ```
 
