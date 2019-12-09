@@ -208,7 +208,7 @@ new Vue({
 
 执行`npm start`，编译成功之后，打开浏览器输入`localhost:5000`，页面中会展示`App.vue`中的内容。
 
-![Hello World](images\without_cli_to_build_project.png)
+![Hello World](images/without_cli_to_build_project.png)
 
 之后我们执行`npm run build`，看是否能构建成功。如果构建成功，会在根目录下生成一个`build`目录，里面就是我们打包的文件。
 
