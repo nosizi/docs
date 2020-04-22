@@ -237,7 +237,6 @@ Hit CTRL-C to stop the server
 ```
 
 我们按照提示打开`127.0.0.1:8080/index.html`，一样显示我们填写的内容的话，就说明谋稳台（粤语乱入）啊。
-<<<<<<< HEAD
 
 ## 独立webpack的配置
 
@@ -460,7 +459,5 @@ new Vue({
 
 ![](./images\without_cli_to_build_project-02.png)
 
-开发模式下成功构建！我们来查看生产模式有没有问题，执行命令`npm run build`构建，
+开发模式下成功构建！我们来查看生产模式有没有问题，执行命令`npm run build`构建。
 
-=======
->>>>>>> b946171ac392dce8a424fe375910f07748ed31d4
