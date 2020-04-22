@@ -212,7 +212,7 @@ new Vue({
 
 执行`npm start`，编译成功之后，打开浏览器输入`localhost:5000`，页面中会展示`App.vue`中的内容。
 
-![Hello World](.\images\without_cli_to_build_project.png)
+![Hello World](images/without_cli_to_build_project.png)
 
 之后我们执行`npm run build`，看是否能构建成功。如果构建成功，会在根目录下生成一个`build`目录，里面就是我们打包的文件。
 
@@ -237,6 +237,7 @@ Hit CTRL-C to stop the server
 ```
 
 我们按照提示打开`127.0.0.1:8080/index.html`，一样显示我们填写的内容的话，就说明谋稳台（粤语乱入）啊。
+<<<<<<< HEAD
 
 ## 独立webpack的配置
 
@@ -461,3 +462,5 @@ new Vue({
 
 开发模式下成功构建！我们来查看生产模式有没有问题，执行命令`npm run build`构建，
 
+=======
+>>>>>>> b946171ac392dce8a424fe375910f07748ed31d4
