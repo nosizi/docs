@@ -85,11 +85,11 @@ class Person {
     this.name = 'Coolman'
   }
 
-  sayHi () {
+  sayHi() {
     console.log(`${greeting}`)
   }
 
-  sayName: () => {
+  sayName() {
     console.log(`My name is ${this.name}`)
   }
 }
