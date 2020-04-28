@@ -48,7 +48,7 @@ module.exports = {
 
 ## 安装babel
 
-项目需要使用babel工具来对JS代码进行转换，因此我们需要安装babel的相关依赖：
+项目需要使用Babel工具来对JS代码进行转换，因此我们需要安装Babel的相关依赖：
 
 ```bash
 npm i -D @babel/core @babel/preset-env @babel/preset-react @babel/plugin-transform-runtime babel-loader
@@ -59,6 +59,9 @@ npm i @babel/runtime-corejs3
 - `@babel/core`：如其名，这是babel的核心代码包。
 - `@babel/preset-env`：`env`依赖包支持把ES6+也就是已经形成标准的而不是提案的JS特性转换成ES5。
 - `@babel/preset-react`：这是用于转换JSX语法的，适用于react项目。这个项目包含了`@babel/plugin-syntax-jsx`、`@babel/plugin-transform-react-jsx`、`@babel/plugin-transform-react-display-name`这三个依赖包。
+- `@babel/plugin-transform-runtime`：一个让Babel反复注入`helper code`即辅助代码，来帮助减小代码大小。
+- `babel-loader`：webpack中Babel的loader，来使用Babel。
+- `@babel/runtime-corejs3`：包含`core-js@3`和`regenerator-runtime`，属于辅助程序，是`@babel/plugin-transform-runtime`一起作为运行时的依赖。`core-js@3`支持ECMAScript的新特性，`regenerator-runtime`用于重新生成程序编译的生成器和异步函数的独立运行时，FB家的。
 
 安装完依赖之后，我们在项目根目录创建一个`babel.config.json`的文件，这是babel转译代码所需的配置文件，我们填写如下配置：
 
@@ -112,4 +115,8 @@ npm start
 
 > 大家都知道`webpack`有个很关键的`entry`入口配置，为什么没有写呢？原因是`entry`有默认值的，即`src/index.js`，后面多入口页会写到。
 
+## 安装html-webpack-plugin
 
+```bash
+npm i -D html-webpack-plugin
+```
