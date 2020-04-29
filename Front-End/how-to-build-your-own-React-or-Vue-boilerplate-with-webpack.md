@@ -61,7 +61,7 @@ npm i @babel/runtime-corejs3
 - `@babel/preset-react`：这是用于转换JSX语法的，适用于react项目。这个项目包含了`@babel/plugin-syntax-jsx`、`@babel/plugin-transform-react-jsx`、`@babel/plugin-transform-react-display-name`这三个依赖包。
 - `@babel/plugin-transform-runtime`：一个让Babel反复注入`helper code`即辅助代码，来帮助减小代码大小。
 - `babel-loader`：webpack中Babel的loader，来使用Babel。
-- `@babel/runtime-corejs3`：包含`core-js@3`和`regenerator-runtime`，属于辅助程序，是`@babel/plugin-transform-runtime`一起作为运行时的依赖。`core-js@3`支持ECMAScript的新特性，`regenerator-runtime`用于重新生成程序编译的生成器和异步函数的独立运行时，FB家的。
+- `@babel/runtime-corejs3`：包含`core-js@3`和`regenerator-runtime`，属于辅助程序，是`@babel/plugin-transform-runtime`一起作为运行时的依赖。`core-js@3`用作pollyfill，并且支持ES6+的新特性，`regenerator-runtime`用于重新生成程序编译的生成器和异步函数的独立运行时，FB家的。
 
 安装完依赖之后，我们在项目根目录创建一个`babel.config.json`的文件，这是babel转译代码所需的配置文件，我们填写如下配置：
 
@@ -83,19 +83,42 @@ npm i @babel/runtime-corejs3
 ```javascript
 const greeting = 'just hi.'
 
+const [methodSayHi, methodSayName] = ['sayHi', 'sayName']
 class Person {
   constructor() {
     this.name = 'Coolman'
   }
 
-  sayHi() {
+  [methodSayHi]() {
     console.log(`${greeting}`)
   }
 
-  sayName() {
+  [methodSayName]() {
     console.log(`My name is ${this.name}`)
   }
 }
+
+const man = new Person()
+man.sayHi()
+man[methodSayName]()
+
+const arr = [1, 2, 3]
+
+const promise = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    if (arr.includes(2)) {
+      resolve(true)
+    } else {
+      reject(false)
+    }
+  }, 1000)
+})
+
+const asyncFunc = async function() {
+  const answer = await promise.then(res => res)
+  console.log(answer)
+}
+asyncFunc()
 ```
 
 在根目录下找到`package.json`，打开并找到`scripts`中的`test`命令，将其改写为如下代码：
@@ -111,7 +134,7 @@ class Person {
 npm start
 ```
 
-然后就会执行`package.json`中的`start`命令，而`start`命令又执行`webpack`让其按照`webpack.config.json`中的配置工作。一切执行完之后，根目录下多了一个`dist`的文件夹，里面有一个`bundle.js`的文件，而这，就是我们在`webpack.config.js`中做的配置输出。
+然后就会执行`package.json`中的`start`命令，而`start`命令又执行`webpack`让其按照`webpack.config.js`中的配置工作。一切执行完之后，根目录下多了一个`dist`的文件夹，里面有一个`bundle.js`的文件，而这，就是我们在`webpack.config.js`中做的配置输出。
 
 > 大家都知道`webpack`有个很关键的`entry`入口配置，为什么没有写呢？原因是`entry`有默认值的，即`src/index.js`，后面多入口页会写到。
 
@@ -120,3 +143,40 @@ npm start
 ```bash
 npm i -D html-webpack-plugin
 ```
+
+这是一个会自动创建`html`文件的插件，还会帮你自动引入打包好的资源，它无需任何配置即可运作。
+回到`webpack.config.js`这个文件，我们引入`html-webpack-plugin`这个webpack插件，并配置它：
+
+```javascript
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+
+module.exports = {
+  output: { /* 省略部分代码... */ },
+  module: { /* 省略部分代码... */ },
+  plugins: {
+    new HtmlWebpackPlugin({
+      title: 'My App :>'
+    })
+  }
+}
+```
+
+在命令行中执行`npm start`执行打包任务，完成之后`dist`目录会多出一个`index.html`的文件，我们双击它在浏览器中打开，你会发现标签页的标题是**My App :>**，我们再按下`F12`打开控制台，在`console`那查看我们js的输出，如果你看不到任何内容需要刷新一下才会再次出现。
+
+![Chrome test.](./images/how-to-build-your-own-React-or-Vue-boilerplate-with-webpack/chrome-test.png)
+
+在Chrome浏览器中显示正常，那么去IE看看：
+
+- **IE 11**
+
+![IE 11 test](./images/how-to-build-your-own-React-or-Vue-boilerplate-with-webpack/IE-11-test.png)
+
+- **IE 10**
+
+![IE 10 test](./images/how-to-build-your-own-React-or-Vue-boilerplate-with-webpack/IE-10-test.png)
+
+- **IE 9**
+
+![IE 9 test](./images/how-to-build-your-own-React-or-Vue-boilerplate-with-webpack/IE-9-test.png)
+
+什么，你问IE8？How dare you!（某环保少女腔调）
