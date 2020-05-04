@@ -2,7 +2,7 @@
 
 ## 简要
 
-本文默认读者熟悉ES6，熟悉npm的操作，以及熟悉React或者Vue的使用，并且使用过两者之一的脚手架搭建过项目，但对如何摒弃CLI搭建项目不清楚、不熟悉的开发者。如果你是老鸟可以关闭这个标签页了（手动狗头），当然，欢迎任何人提出针对改进的意见。
+本文默认读者熟悉ES6，熟悉`npm`和`git`的操作，以及熟悉React或者Vue的使用。如果你是老鸟可以关闭这个标签页了（手动狗头），当然，欢迎大家提出建议，如有错误的地方，也欢迎指正。
 
 ## 创建项目目录
 
@@ -13,7 +13,15 @@ mkdir react-template && cd react-template
 npm init -y
 ```
 
-## 安装webpack
+## 初始化版本控制系统Git
+
+做这一步之前，需要电脑安装Git，如果还没有安装，可到[官网](https://git-scm.com/download)下载安装包。
+
+```bash
+git init
+```
+
+## 安装Webpack
 
 我们给项目本地添加webpack的依赖，在命令行中输入：
 
@@ -86,7 +94,7 @@ const greeting = 'just hi.'
 const [methodSayHi, methodSayName] = ['sayHi', 'sayName']
 class Person {
   constructor() {
-    this.name = 'Coolman'
+    this.name = 'Cool Man'
   }
 
   [methodSayHi]() {
@@ -145,7 +153,7 @@ npm i -D html-webpack-plugin
 ```
 
 这是一个会自动创建`html`文件的插件，还会帮你自动引入打包好的资源，它无需任何配置即可运作。
-回到`webpack.config.js`这个文件，我们引入`html-webpack-plugin`这个webpack插件，并配置它：
+回到`webpack.config.js`这个文件，我们引入`html-webpack-plugin`插件，并配置它：
 
 ```javascript
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -180,3 +188,4 @@ module.exports = {
 ![IE 9 test](./images/how-to-build-your-own-React-or-Vue-boilerplate-with-webpack/IE-9-test.png)
 
 什么，你问IE8？How dare you!（某环保少女腔调）
+
