@@ -111,19 +111,18 @@ man.sayHi()
 man[methodSayName]()
 
 const arr = [1, 2, 3]
-
 const promise = new Promise((resolve, reject) => {
   setTimeout(() => {
     if (arr.includes(2)) {
-      resolve(true)
+      resolve('included')
     } else {
-      reject(false)
+      reject('not included')
     }
   }, 1000)
 })
 
 const asyncFunc = async function() {
-  const answer = await promise.then(res => res)
+  const answer = await promise.then(res => res, err => err)
   console.log(answer)
 }
 asyncFunc()
@@ -187,5 +186,7 @@ module.exports = {
 
 ![IE 9 test](./images/how-to-build-your-own-React-or-Vue-boilerplate-with-webpack/IE-9-test.png)
 
-什么，你问IE8？How dare you!（某环保少女腔调）
+什么，你问IE8？How dare you!（某环保少女腔调(ﾟДﾟ*)ﾉ）
+
+尝试着拿这个[数据](https://caniuse.com/usage-table)去说服老板或者产品不要用IE8了。
 
