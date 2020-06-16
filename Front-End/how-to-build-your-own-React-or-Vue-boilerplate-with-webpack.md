@@ -168,7 +168,7 @@ module.exports = {
 }
 ```
 
-在命令行中执行`npm start`执行打包任务，完成之后`dist`目录会多出一个`index.html`的文件，我们双击它在浏览器中打开，你会发现标签页的标题是**My App :>**，我们再按下`F12`打开控制台，在`console`那查看我们js的输出，如果你看不到任何内容需要刷新一下才会再次出现。
+在命令行中执行`npm start`执行打包任务，完成之后`dist`目录会多出一个`index.html`的文件，我们双击它在浏览器中打开，你会发现标签页的标题是**My App :>**，我们再按下`F12`打开控制台，在`Console`那查看我们JS的输出，如果你看不到任何内容需要刷新一下才会再次出现。
 
 ![Chrome test.](./images/how-to-build-your-own-React-or-Vue-boilerplate-with-webpack/chrome-test.png)
 
@@ -190,3 +190,129 @@ module.exports = {
 
 尝试着拿这个[数据](https://caniuse.com/usage-table)去说服老板或者产品不要用IE8了。
 
+## 更改构建文件结构
+
+在项目根目录中新建`config`目录，我们将根目录的`webpack.config.js`移入到其中。随后，在根目录创建`scripts`目录，用于放置构建所需的执行脚本。在`scripts`中，我们分别创建一个`start.js`文件和`build.js`文件；`start.js`用于启用dev模式的Webpack进行构建、预览，`build.js`用于执行线上模式的构建任务。
+
+我们的目的是在这两个文件之中，针对`webpack.mode`做相应的配置，执行不同的任务，但是可以做到只引用一个`webpack.config`文件，同时还可以进行横向扩展，例如执行Webpack构建之前或者之后，针对配置设置各类环境变量，使用Nodejs创建目录、copy、移动文件、执行另一个本地项目的构建等等。
+
+```javascript
+// === scripts/start.js ===
+const webpack = require('webpack')
+const WebpackDevServer = require('webpack-dev-server')
+const ConfigFactory = require('../config/webpack.config')  // 引入基础配置
+
+const starter = new Promise((resolve, reject) => {
+  // do something...
+}).then(res => {
+  // do something...
+})
+
+// === scripts/build.js ===
+const webpack = require('webpack')
+const ConfigFactory = require('../config/webpack.config')  // 引入基础配置
+
+const buidler = new Promise((resolve, reject) => {
+  // do something...
+}).then(res => {
+  // do something...
+})
+```
+
+### 基本配置
+
+在`config/webpack.config.js`中，我们需要创建一个函数并导出供`start.js`和`build.js`使用，函数接收相关的配置，经过我们做的一些处理之后，返回一个Webpack的配置对象。
+
+```javascript
+// ==== config/webpack.config.js ===
+const path = require('path')
+
+module.exports = function (config) {
+  const isDevEnv = config.mode === 'development'
+
+  const webpackConfig = {
+    mode: config.mode,
+    devtool: isDevEnv ? 'cheap-module-source-map' : false,
+    output: {
+      path: path.resolve(__dirname, '../dist'),
+      filename: 'static/js/[name].[hash].bundle.js'
+    },
+    resolve: {
+      // 当引入一个js文件时，无需指定文件后缀名，即.js
+      extensions: [',js'],
+      // 配置alias，用于避免引用文件时繁杂的路径
+      // https://webpack.js.org/configuration/resolve/#resolvealias
+      alias: {
+        '@': path.resolve(__dirname, '../src')
+      }
+    },
+    module: {
+      rules: [
+        {
+          test: /\.js$/,
+          exclude: /node_modules/,
+          use: 'babel-loader'
+        }
+      ]
+    },
+    plugins: {},
+    optimization: {}
+  }
+
+  return webpackConfig
+}
+```
+
+接下来，我们安装一些基础插件，并做配置。
+
+#### CSS
+
+我们安装`style-loader`、`css-loader`这两个插件：
+
+```bash
+npm i style-loader css-loader -D
+```
+
+`css-loader`用于处理`.css`文件，`style-loader`则可以把CSS输出到HTML头部的style标签中。我们对上面的`webpackConfig.module.rules`进行修改，添加一个新的rule：
+
+```javascript
+// ==== config/webpack.config.js ===
+[
+  { /* js rule */ },
+  {
+    test: /\.css$/,
+		use: ['style-loader', 'css-loader']    
+  }
+]
+```
+
+> 注意，rules的loader顺序，是从右至左，例如这里，先执行css-loader，后执行style-loader。
+
+未完，待续...
+
+### 开发模式配置
+
+在开发模式中，我们需要定义构建的流程，来执行相关的任务。
+
+```javascript
+// === scripts/start.js ===
+const webpack = require('webpack')
+const WebpackDevServer = require('webpack-dev-server')
+const ConfigFactory = require('../config/webpack.config')  // 引入基础配置
+
+const starter = new Promise((resolve, reject) => {
+  // do something...
+}).then(res => {
+  // do something...
+})
+```
+
+### 线上模式配置
+
+## 配置开发模式
+
+## 配置线上模式
+
+## 编译JSX
+
+未完，待续...
