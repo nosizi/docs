@@ -288,6 +288,37 @@ npm i style-loader css-loader -D
 
 > 注意，rules的loader顺序，是从右至左，例如这里，先执行css-loader，后执行style-loader。
 
+#### images
+
+安装`url-loader`：
+
+```bash
+npm i url-loader -D
+```
+
+`url-loader`可以帮助我们转换图片为`Base64`，以减少http请求次数。但是图片过大，`Base64`也会更长、占用文件更多字节，可以给其一个`limit`限制，超出`limit`使用`file-loader`的功能复制图片到指定输出位置，并更改文件中该图片的引用路径。
+
+```javascript
+// ==== config/webpack.config.js ===
+[
+  { /* js rule */ },
+  { /* css rule */ },
+  {
+    test: /\.(png|jpg|svg|gif)$/,
+		use: [
+      {
+        loader: 'url-loader',
+        options: {
+          limit: 8192  // 单位字节：8kb
+        }
+      }
+    ]    
+  }
+]
+```
+
+当然，`url-loader`不仅仅只是可以处理图片，它可以处理大多数文件，并指定编码或自定义编码规则，这里只展示对图片的处理，感兴趣的可以前往[官网](https://github.com/webpack-contrib/url-loader)查看。
+
 未完，待续...
 
 ### 开发模式配置
