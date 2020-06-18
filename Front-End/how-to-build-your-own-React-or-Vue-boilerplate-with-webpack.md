@@ -265,15 +265,15 @@ module.exports = function (config) {
 
 接下来，我们安装一些基础插件，并做配置。
 
-#### CSS
+#### CSS、PostCSS、预处理器
 
-我们安装`style-loader`、`css-loader`这两个插件：
+我们安装`style-loader`、`css-loader`、`postcss-loader`、`autoprefixer`：
 
 ```bash
-npm i style-loader css-loader -D
+npm i style-loader css-loader postcss-loader autoprefixer -D
 ```
 
-`css-loader`用于处理`.css`文件，`style-loader`则可以把CSS输出到HTML头部的style标签中。我们对上面的`webpackConfig.module.rules`进行修改，添加一个新的rule：
+`css-loader`用于处理`.css`文件，`style-loader`则可以把CSS输出到HTML头部的style标签中；关于PostCSS可以理解为一个平台，需要结合插件来使用，`autoprefixer`就是其中一个必备插件，用于给CSS相关属性添加浏览器厂商前缀。我们对上面的`webpackConfig.module.rules`进行修改，添加一个新的rule：
 
 ```javascript
 // ==== config/webpack.config.js ===
@@ -281,12 +281,58 @@ npm i style-loader css-loader -D
   { /* js rule */ },
   {
     test: /\.css$/,
-		use: ['style-loader', 'css-loader']    
+		use: [
+      'style-loader',
+      'css-loader',
+      {
+        loader: 'postcss-loader',
+        options: {
+          plugins: [
+            require('autoprefixer')
+          ]
+        }
+      }
+    ]    
   }
 ]
 ```
 
 > 注意，rules的loader顺序，是从右至左，例如这里，先执行css-loader，后执行style-loader。
+
+**关于预处理器**
+
+目前流行的CSS预处理器有三者：`Sass`、`Less`、`Stylus`，使用哪一个取决于自己或者团队规定，只需要安装相关的`loader`就行，这里以`Sass`为例：
+
+```bash
+npm i sass-loader node-sass -D
+```
+
+配置rule：
+
+```javascript
+// ==== config/webpack.config.js ===
+[
+  { /* js rule */ },
+  {
+    test: /\.css$/,
+		use: [
+      'style-loader',
+      'css-loader',
+      {
+        loader: 'postcss-loader',
+        options: {
+          plugins: [
+            require('autoprefixer')
+          ]
+        }
+      },
+      'sass-loader'
+    ]
+  }
+]
+```
+
+
 
 #### images
 
@@ -304,11 +350,12 @@ npm i url-loader -D
   { /* js rule */ },
   { /* css rule */ },
   {
-    test: /\.(png|jpg|svg|gif)$/,
+    test: /\.(png|jpe?g|svg|gif)$/,
 		use: [
       {
         loader: 'url-loader',
         options: {
+          name: 'static/media/images/[name].[hash:8].[ext]',
           limit: 8192  // 单位字节：8kb
         }
       }
