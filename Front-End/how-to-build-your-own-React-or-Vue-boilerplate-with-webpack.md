@@ -332,8 +332,6 @@ npm i sass-loader node-sass -D
 ]
 ```
 
-
-
 #### images
 
 安装`url-loader`：
@@ -364,7 +362,7 @@ npm i url-loader -D
 ]
 ```
 
-当然，`url-loader`不仅仅只是可以处理图片，它可以处理大多数文件，并指定编码或自定义编码规则，这里只展示对图片的处理，感兴趣的可以前往[官网](https://github.com/webpack-contrib/url-loader)查看。
+当然，`url-loader`不仅仅只是可以处理图片，它可以处理大多数文件，并指定编码或自定义编码规则，这里只展示对图片的处理，感兴趣的可以前往[官网](https://github.com/webpack-contrib/url-loader)查看，或者查看其它的[loaders](https://webpack.js.org/loaders/)
 
 未完，待续...
 
